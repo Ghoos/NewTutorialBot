@@ -2,8 +2,8 @@ const { MessageEmbed } = require("discord.js");
 const ms = require("ms");
 module.exports = {
   name: "giveaway",
-  description: "Create a simple giveaway",
-  usage: "<time> <channel> <prize>",
+  description: "Crie um simples sorteio",
+  usage: "<tempo> <canal> <premio>",
   category: "fun",
   run: async (bot, message, args) => {
     if (!args[0]) return message.channel.send(`You did not specify your time!`);
@@ -13,21 +13,21 @@ module.exports = {
       !args[0].endsWith("m")
     )
       return message.channel.send(
-        `You did not use the correct formatting for the time!`
+        `Você não usou a formatação correta para o horário!`
       );
-    if (isNaN(args[0][0])) return message.channel.send(`That is not a number!`);
+    if (isNaN(args[0][0])) return message.channel.send(`Isso não é um numero!`);
     let channel = message.mentions.channels.first();
     if (!channel)
       return message.channel.send(
-        `I could not find that channel in the guild!`
+        `Não encontrei esse canal no servidor!`
       );
     let prize = args.slice(2).join(" ");
-    if (!prize) return message.channel.send(`No prize specified!`);
-    message.channel.send(`*Giveaway created in ${channel}*`);
+    if (!prize) return message.channel.send(`Nenhum prêmio especificado!`);
+    message.channel.send(`*Sorteio criado no ${channel}*`);
     let Embed = new MessageEmbed()
-      .setTitle(`New giveaway!`)
+      .setTitle(`Novo sorteio!`)
       .setDescription(
-        `The user ${message.author} is hosting a giveaway for the prize of **${prize}**`
+        `O Usuario ${message.author} Está organizando um evento que o prêmio é **${prize}**`
       )
       .setTimestamp(Date.now() + ms(args[0]))
       .setColor(`BLUE`);
@@ -35,9 +35,9 @@ module.exports = {
     m.react("🎉");
     setTimeout(() => {
       if (m.reactions.cache.get("🎉").count <= 1) {
-        message.channel.send(`Reactions: ${m.reactions.cache.get("🎉").count}`);
+        message.channel.send(`Reações: ${m.reactions.cache.get("🎉").count}`);
         return message.channel.send(
-          `Not enough people reacted for me to start draw a winner!`
+          `Poucas pessoas reagiram para eu escolher um vencedor :(!`
         );
       }
 
@@ -46,7 +46,7 @@ module.exports = {
         .users.cache.filter((u) => !u.bot)
         .random();
       channel.send(
-        `The winner of the giveaway for **${prize}** is... ${winner}`
+        `O ganhador do sorteio de **${prize}** é... ${winner}`
       );
     }, ms(args[0]));
   },
